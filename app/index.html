@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body data-ng-app="spitsNotes">
+	<main data-ng-controller="spitsController">
+		<h1>{{typing}}</h1>
+		<input type="text" data-ng-model="typing">
+		<button data-ng-click="alertTyping()">Type things!</button>
+	</main>
+	<script src="bundle.js"></script>
+</body>
+</html>
