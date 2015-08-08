@@ -48,15 +48,9 @@
 
 	__webpack_require__(1);
 
-	var spitsNotes = angular.module('spitsNotes', []);
+	var moviesApp = angular.module('moviesApp', []);
 
-	var spitsController = spitsNotes.controller('spitsController', ['$scope', function($scope) {
-		$scope.typing = 'hello world';
-		$scope.alertTyping = function() {
-			alert($scope.typing);
-		};
-	}]);
-
+	__webpack_require__(2)(moviesApp);
 
 /***/ },
 /* 1 */
@@ -28426,6 +28420,82 @@
 	})(window, document);
 
 	!window.angular.$$csp() && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = exports = function(app) {
+		__webpack_require__(3)(app);
+	}
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function(app) {
+		app.controller('moviesController', ['$scope', '$http', function($scope, $http) {
+			$scope.movies = [];
+			$scope.errors = [];
+
+			$scope.getAll = function() {
+				$http.get('/movies/')
+					.then(function(res) {
+						console.log(res.data);
+						$scope.movies = res.data;
+					}, function(res) {
+						$scope.errors.push({msg: 'could not find movies from server'});
+						console.log(res.data);
+					});
+			};
+			$scope.create = function(movie) {
+				
+				console.log($scope.newMovie)
+				// var movie = $scope.newMovie;
+				$http.post('/movies/', movie)
+					.then(function(res) {
+						$scope.movies.push(res.data);
+						$scope.newMovie = null;
+
+					}, function(res) {
+						$scope.errors.push(res.data);
+						$scope.newMovie = null;
+
+					})
+			};
+			$scope.destroy = function(movie) {
+				$http.delete('/movies/' + movie._id)
+					.then(function(res) {
+						$scope.movies.splice($scope.movies.indexOf(movie), 1);
+					}, function(res) {
+						console.log(res.data);
+						$scope.errors.push(res.data);
+					});
+			};
+			$scope.update = function(movie) {
+				$http.put('/movies/' + movie._id, movie)
+					.then(function(res) {
+						movie.editing = false;
+					}, function(res) {
+						movie.editing = false;
+						console.log(res.data);
+					})
+			};
+			$scope.cancel = function(movie) {
+				movie.title = movie.oldTitle;
+				movie.editing = false;
+			};
+			$scope.edit = function(movie) {
+				movie.editing = true;
+				movie.oldTitle = movie.title;
+				console.log(movie.oldMovie);
+			}
+		}]);
+	};
 
 /***/ }
 /******/ ]);

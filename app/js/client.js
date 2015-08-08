@@ -2,11 +2,6 @@
 
 require('angular/angular');
 
-var spitsNotes = angular.module('spitsNotes', []);
+var moviesApp = angular.module('moviesApp', []);
 
-var spitsController = spitsNotes.controller('spitsController', ['$scope', function($scope) {
-	$scope.typing = 'hello world';
-	$scope.alertTyping = function() {
-		alert($scope.typing);
-	};
-}]);
+require('./movies/movie.js')(moviesApp);

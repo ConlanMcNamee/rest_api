@@ -11,7 +11,6 @@ module.exports = function(router) {
 				res.json({msg: "err"});
 			} else {
 				res.json(data);
-				console.log(data);
 			}
 		});
 	});
@@ -19,7 +18,6 @@ module.exports = function(router) {
 	router.get('/:id', function(req,res) {
 		console.log('hit get/:id end point')
 		console.log('req.parmas.id', req.params.id)
-		var id = req.params.id;
 		Movies.find({_id: req.params.id}, function(err, data) {
 			if (err) {
 				res.status(404);
@@ -35,15 +33,16 @@ module.exports = function(router) {
 	router.post('/', function(req,res) {
 		var movies = new Movies(req.body);
 		console.log(movies);
-		movies.save(function(err, wholemovie) {
+		movies.save(function(err, data) {
 
 			if(err) {
-				res.status(404);
+			
 				res.json({msg: 'failed to save movie'});
 			} else {
-				console.log(wholemovie);
 				res.status(200);
-				res.json({msg: 'Movie successfully saved!', id: wholemovie._id});
+				console.log(data);
+				res.send(data);
+				// res.json(wholemovie);
 			}
 		});
 	});
@@ -55,27 +54,28 @@ module.exports = function(router) {
 				res.json({'msg': 'failed to update'});
 				} else {
 					res.status(200);
-					res.json({msg: 'Movie successfully updated', id: data._id})
+					res.json(data);
 				}
 		});
 	});
 
 	router.delete('/:id', function(req, res) {
-		var id = req.params.id;
-		Movies.find({_id: req.body.id}, function(err, data) {
+		console.log('hit delete route');
+		Movies.find({_id: req.params.id}, function(err, data) {
 			if(err) {
-				res.status(404);
+				res.status(400);
 				res.json({msg:"err"});
 			} else {
+
 				res.status(200);
-				res.json({msg: 'Movie successfully deleted'});
+				res.json(data);
 			}
 		}).remove().exec();
 	});
 	router.delete('/', function(req, res) {
 		Movies.remove({}, function(err, data) {
 			if(err) {
-				res.status(404);
+				res.status(400);
 				res.json({msg:"err"});
 			} else {
 				res.status(200);

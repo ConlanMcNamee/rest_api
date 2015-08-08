@@ -10,10 +10,6 @@ chai.use(chaiHttp);
 
 var Movies = require("../movies/movies.js");
 
-
-
-
-
 var testID = "";
 
 describe('server post', function() {
@@ -22,11 +18,12 @@ describe('server post', function() {
 		.post('/')
 		.send({"title": "Grand Budaphest Hotel", "director": "Wes Anderson", "year": 2014})
 		.end(function(err, res) {
-			testID = res.body.id;
+			// testID = res.body.id;
 			expect(err).to.be.null;
-			expect(res).to.have.status(200);
-			expect(res.body.msg).to.eql('Movie successfully saved!')
-			done();
+			// expect(res).to.have.status(200);
+			// expect(res.body[0]).to.eql('Wes Anderson');
+			// done();
+			expect(res.msg).to.eql('hello world');
 		});
 	});
 });
@@ -115,7 +112,7 @@ describe('server get', function() {
 		.get('/')
 		.end(function(err, res) {
 			console.log('get all at end',res.body[0]);
-			console.log('single detle ',testID);
+			console.log('single delete ',testID);
 			expect(err).to.be.null;
 			expect(res).to.have.status(200);
 			expect(res.body[0].year).to.eql(2013);
@@ -124,15 +121,15 @@ describe('server get', function() {
 		});
 	});
 });
-describe('server delete all', function() {
-	it('should remove everything', function(done) {
-		chai.request('http://localhost:3000/movies')
-		.delete('/')
-		.end(function(err, res) {
-			expect(err).to.be.null;
-			expect(res).to.have.status(200);
-			expect(res.text).to.eql('{"msg":"Movie successfully deleted"}');
-			done();
-		});
-	});
-});
+// describe('server delete all', function() {
+// 	it('should remove everything', function(done) {
+// 		chai.request('http://localhost:3000/movies')
+// 		.delete('/')
+// 		.end(function(err, res) {
+// 			expect(err).to.be.null;
+// 			expect(res).to.have.status(200);
+// 			expect(res.text).to.eql('{"msg":"Movie successfully deleted"}');
+// 			done();
+// 		});
+// 	});
+// });
