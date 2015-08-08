@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body data-ng-app="moviesApp">
+	<h1>Movies:</h1>
+	<main data-ng-controller="moviesController" data-ng-init="getAll()">
+		<form name="newMovieForm" data-ng-submit="create(newMovie)">
+			<label for="newMovieTitle">Movie Title:</label>
+			<input type="text" required name="newMovieTitle" data-ng-model="newMovie.title">
+
+
+			<button type="submit" data-ng-disabled="newMovieForm.$invalid">Create new Movie</button>
+		</form>
+		<ul id="movieList">
+			<li data-ng-repeat="movie in movies">
+				{{movie.title}}
+				<form data-ng-if="movie.editing" name="{{movie._id}}form" data-ng-submit="update(movie)">
+					<input type="text" data-ng-model="movie.title">
+					<button type="submit">Save</button>
+					<button data-ng-click="cancel(movie)">Cancel</button>
+				</form>
+				<button data-ng-if="!movie.editing" data-ng-click="edit(movie)">
+					Edit</button>
+				<button data-ng-click="destroy(movie)">Delete</button>
+			</li>
+		<ul>
+		
+	</main>
+	<script src="bundle.js"></script>
+</body>
+</html>
