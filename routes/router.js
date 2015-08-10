@@ -31,6 +31,7 @@ module.exports = function(router) {
 	});
 
 	router.post('/', function(req,res) {
+		console.log('hit post route');
 		var movies = new Movies(req.body);
 		console.log(movies);
 		movies.save(function(err, data) {
@@ -48,6 +49,7 @@ module.exports = function(router) {
 	});
 
 	router.put('/:id', function(req,res) {
+		console.log('hit put route');
 		Movies.update({_id: req.params.id},{$set: req.body}, function(err, data) {
 			if(err) {
 				res.status(400);
@@ -73,6 +75,7 @@ module.exports = function(router) {
 		}).remove().exec();
 	});
 	router.delete('/', function(req, res) {
+		console.log('hit delete route');
 		Movies.remove({}, function(err, data) {
 			if(err) {
 				res.status(400);
